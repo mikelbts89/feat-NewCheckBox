@@ -54,10 +54,10 @@ function generateSingleCar(index){
     //     console.log(element,index)
     // });
     document.getElementById("bt").addEventListener("click",function(){
-        document.getElementById("loader").style.display = "block";
-        setTimeout(function(){
-         document.getElementById("loader").style.display = "none";
-        }, 5000);
+        // document.getElementById("loader").style.display = "block";
+        // setTimeout(function(){
+        //  document.getElementById("loader").style.display = "none";
+        // }, 5000);
     })
 
     document.getElementById("search").addEventListener("keyup",function(){
@@ -66,13 +66,13 @@ function generateSingleCar(index){
         const value = this.value.toLowerCase();
        setTimeout(() => {
         const searchResult = [];
-        result.forEach(function(car)  {
-            if(car.type.toLowerCase() === value){
-                searchResult.push(car)
+        for (let index = 0; index < result.length; index++) {
+            if(result[index].type.toLowerCase() === value){
+                console.log(result[index])
             }
-        });
+        }
         document.getElementById("loader").style.display = "none";
-       }, 1000);
+       }, 0);
         // draw searchResult
     })
    
