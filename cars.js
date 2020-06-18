@@ -46,6 +46,35 @@ function generateSingleCar(index){
    
 }
 
+(function(){
+    // DONT DO THIS!
+    const result = generateCars(100000);
 
-const result = generateCars(50);
-console.log(result)
+    // result.forEach(function(element,index)  {
+    //     console.log(element,index)
+    // });
+    document.getElementById("bt").addEventListener("click",function(){
+        document.getElementById("loader").style.display = "block";
+        setTimeout(function(){
+         document.getElementById("loader").style.display = "none";
+        }, 5000);
+    })
+
+    document.getElementById("search").addEventListener("keyup",function(){
+        document.getElementById("loader").style.display = "block";
+        if(!this.value) return;
+        const value = this.value.toLowerCase();
+       setTimeout(() => {
+        const searchResult = [];
+        result.forEach(function(car)  {
+            if(car.type.toLowerCase() === value){
+                searchResult.push(car)
+            }
+        });
+        document.getElementById("loader").style.display = "none";
+       }, 1000);
+        // draw searchResult
+    })
+   
+})()
+
