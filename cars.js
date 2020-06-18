@@ -6,6 +6,8 @@ const colors = [ "red", "green", "yellow", "black" ];
 
 const types = [ "BMW", "MRCDS", "Mazda", "Subaro" ];
 
+const doors = [ 2,4,5 ];
+
 
 function generateCars(numberOfCars){ //return array with Cars ( each car is an object in JS)
     if(typeof numberOfCars !== 'number') return;
@@ -17,10 +19,12 @@ function generateCars(numberOfCars){ //return array with Cars ( each car is an o
 }
 
 function generateSingleCar(index){
-
     return {
         lp:_generateLP(),
         color: _generateColor(),
+        type: _generateType(),
+        doors: _generateDoors(),
+        isSunRoof: _isSunRoof(index)
     };
 
 
@@ -30,6 +34,16 @@ function generateSingleCar(index){
     function _generateColor(){
         return colors[Math.floor(Math.random()*colors.length)];
     }
+    function _generateDoors(){
+        return doors[Math.floor(Math.random()*doors.length)];
+    }
+    function _isSunRoof(index){
+        return index % 2 === 0 ? true : false
+    }
+    function _generateType(){
+          return types[Math.floor(Math.random()*types.length)];
+    }
+   
 }
 
 
