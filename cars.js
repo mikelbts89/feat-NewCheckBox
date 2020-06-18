@@ -17,8 +17,21 @@ function generateCars(numberOfCars){ //return array with Cars ( each car is an o
 }
 
 function generateSingleCar(index){
-    return {};
+
+    return {
+        lp:_generateLP(),
+        color: _generateColor(),
+    };
+
+
+    function _generateLP(){
+        return Math.ceil(Math.random()*999999);
+    }
+    function _generateColor(){
+        return colors[Math.floor(Math.random()*colors.length)];
+    }
 }
 
-const result = generateCars(10);
+
+const result = generateCars(50);
 console.log(result)
