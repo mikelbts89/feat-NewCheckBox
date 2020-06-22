@@ -1,11 +1,5 @@
 const colors = ["red", "green", "yellow", "black"];
-
-// print the colors? 
-// how to? 
-// for, foreach , 
-
 const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
-
 const doors = [2, 4, 5];
 
 
@@ -50,43 +44,16 @@ function generateSingleCar(index) {
 
 }
 
+// array [....]
+// filter - filter by boolean statment
+// find - like filter but exactly one, the first one.
+// findIndex - exactly like find, but return only the index.
+// map - return partial result
+// reduce - next time..
+
 (function () {
-    // DONT DO THIS!
-    const result = generateCars(100000, true);
-    console.log(result);
-    const myLastCar = generateSingleCar(1);
-    myLastCar.lp = 12345678;
-    result.push(myLastCar)
-    // result.forEach(function(element,index)  {
-    //     console.log(element,index)
-    // });
-    document.getElementById("bt").addEventListener("click", function () {
-        document.getElementById("loader").style.display = "block";
 
-        setTimeout(function () {
-            //show image
-            document.getElementById("loader").style.display = "none";
-        }, 5000);
-        console.log("set timeout done? ")
-    })
+    const cars = generateCars(100, true)
+    
 
-    document.getElementById("search").addEventListener("keyup", function () {
-        document.getElementById("loader").style.display = "block";
-        if (!this.value) return;
-        const value = Number(this.value)
-
-        setTimeout(() => {
-            const searchResult = [];
-            for (let index = 0; index < result.length; index++) {
-                if (result[index].lp === value) {
-                    console.log(result[index])
-                }
-            }
-            // console.log(result[value]);
-            document.getElementById("loader").style.display = "none";
-        }, 0);
-        // draw searchResult
-    })
-
-})()
-
+}())

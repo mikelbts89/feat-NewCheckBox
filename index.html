@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./index.css">
-    <title>Document</title>
+    <title>Car search</title>
 </head>
+
 <body>
-    
+
 
     <div class="container">
         <h1 class="jumbotron"> Cars Management </h1>
         <div class="row">
-            <button class="btn btn-primary" id="bt"> click to draw  </button>
+            <div class="col-lg-2">
+                <select class="form-control">
+                    <option value="type">Type</option>
+                    <option value="color">Color</option>
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control form-control-md" type="text" placeholder=".form-control-lg">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-success"> Search </button>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <button class="btn btn-primary" id="bt"> click to draw </button>
             <input type="search" id="search">
         </div>
         <div class="row">
             <div class="loader" id="loader" style="display: none;"></div>
-        </div>
+        </div> -->
     </div>
-    
+
     <script src="./cars.js"></script>
 </body>
+
 </html>
