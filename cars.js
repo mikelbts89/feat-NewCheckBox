@@ -63,14 +63,22 @@ function generateSingleCar(index) {
 (function () {
     const cars = generateCars(100, true)
     DOM.listData = document.getElementById("data");
+    DOM.cardsData = document.getElementById("data-cards");
     draw(cars, DOM.listData, "list");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
+    listViewButton.addEventListener("click", function () {
+        draw(cars, DOM.listData, "list")
+    })
+    cardViewButton.addEventListener("click", function () {
+        draw(cars, DOM.cardsData, "cards")
+    })
 }())
 
 
 function draw(data, domContainer, displayType) {
+    clearDOM()
     if (!Array.isArray(data)) return;
     if (typeof domContainer !== 'object') return;
     const displayFunction = displayFunctions[displayType]
@@ -80,6 +88,10 @@ function draw(data, domContainer, displayType) {
     });
 }
 
+function clearDOM() {
+    DOM.listData.innerHTML = "";
+    DOM.cardsData.innerHTML = "";
+}
 function getListItem(carData) {
     const listItem = document.createElement("li");
     listItem.classList.add("list-group-item");
@@ -97,8 +109,3 @@ function getCardItem(carData) {
     return card;
 }
 function getRowItem() { }
-
-
-// draw
-// single list item
-// 
