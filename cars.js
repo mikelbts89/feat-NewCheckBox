@@ -54,6 +54,21 @@ function generateSingleCar(index) {
 (function () {
 
     const cars = generateCars(100, true)
-    
+    draw(cars);
+
 
 }())
+
+
+function draw(data) {
+    if (!Array.isArray(data)) return;
+
+    data.forEach(car => {
+        console.log(car)
+    });
+}
+
+    
+// draw
+// single list item
+// 
