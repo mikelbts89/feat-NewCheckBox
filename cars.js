@@ -1,12 +1,14 @@
 const colors = ["red", "green", "yellow", "black"];
-
-// print the colors? 
-// how to? 
-// for, foreach , 
-
 const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
-
 const doors = [2, 4, 5];
+const DOM = {}
+
+const displayFunctions = {
+    "cards": getCardItem,
+    "list": getListItem,
+    "table": getRowItem,
+};
+console.log(displayFunctions)
 
 
 function generateCars(numberOfCars, isArray) { //return array with Cars ( each car is an object in JS)
@@ -50,43 +52,60 @@ function generateSingleCar(index) {
 
 }
 
+// array [....]
+// filter - filter by boolean statment
+// find - like filter but exactly one, the first one.
+// findIndex - exactly like find, but return only the index.
+// map - return partial result
+// reduce - next time..
+
+
 (function () {
-    // DONT DO THIS!
-    const result = generateCars(100000, true);
-    console.log(result);
-    const myLastCar = generateSingleCar(1);
-    myLastCar.lp = 12345678;
-    result.push(myLastCar)
-    // result.forEach(function(element,index)  {
-    //     console.log(element,index)
-    // });
-    document.getElementById("bt").addEventListener("click", function () {
-        document.getElementById("loader").style.display = "block";
+    const cars = generateCars(100, true)
+    DOM.listData = document.getElementById("data");
+    DOM.cardsData = document.getElementById("data-cards");
+    draw(cars, DOM.listData, "list");
 
-        setTimeout(function () {
-            //show image
-            document.getElementById("loader").style.display = "none";
-        }, 5000);
-        console.log("set timeout done? ")
+    const listViewButton = document.getElementById("listView");
+    const cardViewButton = document.getElementById("cardView");
+    listViewButton.addEventListener("click", function () {
+        draw(cars, DOM.listData, "list")
     })
-
-    document.getElementById("search").addEventListener("keyup", function () {
-        document.getElementById("loader").style.display = "block";
-        if (!this.value) return;
-        const value = Number(this.value)
-
-        setTimeout(() => {
-            const searchResult = [];
-            for (let index = 0; index < result.length; index++) {
-                if (result[index].lp === value) {
-                    console.log(result[index])
-                }
-            }
-            // console.log(result[value]);
-            document.getElementById("loader").style.display = "none";
-        }, 0);
-        // draw searchResult
+    cardViewButton.addEventListener("click", function () {
+        draw(cars, DOM.cardsData, "cards")
     })
+}())
 
-})()
 
+function draw(data, domContainer, displayType) {
+    clearDOM()
+    if (!Array.isArray(data)) return;
+    if (typeof domContainer !== 'object') return;
+    const displayFunction = displayFunctions[displayType]
+    if (typeof displayFunction !== 'function') return;
+    data.forEach(car => {
+        domContainer.append(displayFunction(car))
+    });
+}
+
+function clearDOM() {
+    DOM.listData.innerHTML = "";
+    DOM.cardsData.innerHTML = "";
+}
+function getListItem(carData) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("list-group-item");
+    listItem.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
+    return listItem;
+}
+
+function getCardItem(carData) {
+    const card = document.createElement("div");
+    card.style.border = "1px solid black";
+    card.style.height = "50px";
+    card.style.width = "300px";
+    card.style.display = "inline-block";
+    card.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
+    return card;
+}
+function getRowItem() { }
