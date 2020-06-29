@@ -103,22 +103,44 @@ function generateSingleCar(index) {
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
+    DOM.whatToDraw = "list"
 
-    draw(cars, DOM.listData, "list");
+    draw(cars, DOM.listData, DOM.whatToDraw);
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
+    const searchOperation = document.getElementById("searchOperation");
 
     listViewButton.addEventListener("click", function () {
+        DOM.whatToDraw = "list";
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
+        DOM.whatToDraw = "cards"
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
+        DOM.whatToDraw = "table"
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
+    })
+
+    searchOperation.addEventListener("click", function () {
+        const value = document.getElementById("searchValue").value;
+        if (!value) return;
+        const result = cars.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
+        if (DOM.whatToDraw === "table") {
+            draw(result, DOM.tableData, "table")
+            draw(headers, DOM.tableHead, "tableHeader", false)
+        }
+        if (DOM.whatToDraw === "cards") {
+            draw(result, DOM.cardsData, "cards")
+        }
+        if (DOM.whatToDraw === "list") {
+            draw(result, DOM.listData, "list")
+        }
+
     })
 }())
 
@@ -161,7 +183,7 @@ function getCardItem(carData) {
     card.style.height = "50px";
     card.style.width = "300px";
     card.style.display = "inline-block";
-    card.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
+    card.innerText = `car lp: ${carData.lp}, car color: ${carData.color} , car type: ${carData.type}`;
     return card;
 }
 
