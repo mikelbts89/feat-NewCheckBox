@@ -9,6 +9,25 @@ const displayFunctions = {
     "table": getRowItem,
 };
 
+const columns = [
+    {
+        value: "lp",
+        label: "LP"
+    },
+    {
+        value: "color",
+        label: "Color"
+    },
+    {
+        value: "type",
+        label: "Type"
+    },
+    {
+        value: "doors",
+        label: "Doors"
+    }
+]
+
 
 function generateCars(numberOfCars, isArray) { //return array with Cars ( each car is an object in JS)
     if (typeof numberOfCars !== 'number') return;
@@ -64,12 +83,19 @@ function generateSingleCar(index) {
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
+    DOM.tableHead = document.getElementById("table-head");
 
     draw(cars, DOM.listData, "list");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
+    //     <tr>
+    //     <th scope="col">LP</th>
+    //     <th scope="col">Color</th>
+    //     <th scope="col">Type</th>
+    //     <th scope="col">Doors</th>
+    // </tr>
 
     listViewButton.addEventListener("click", function () {
         draw(cars, DOM.listData, "list")
@@ -78,6 +104,7 @@ function generateSingleCar(index) {
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
+        
         draw(cars, DOM.tableData, "table")
     })
 }())
@@ -143,12 +170,13 @@ function getRowItem(carData) {
     }
 
     function _getTD(value) {
-        // const allowedTypes = ["string", "number", "boolean"];
+        const allowedTypes = ["string", "number"];
         const theType = typeof value;
-        //if (!allowedTypes.includes(theType)) return; advanced validation
-        
+        // if (!allowedTypes.includes(theType)) return;
+        let currentValue = !allowedTypes.includes(theType) ? "-" : value
+        // if (theType !== "string" && theType !== "number") return;
         const td = document.createElement("TD");
-        td.innerText = value;
+        td.innerText = currentValue;
         return td;
     }
 }
