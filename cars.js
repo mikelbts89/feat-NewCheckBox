@@ -8,7 +8,6 @@ const displayFunctions = {
     "list": getListItem,
     "table": getRowItem,
 };
-console.log(displayFunctions)
 
 
 function generateCars(numberOfCars, isArray) { //return array with Cars ( each car is an object in JS)
@@ -68,11 +67,17 @@ function generateSingleCar(index) {
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
+    const tableViewButton = document.getElementById("tableView");
+
     listViewButton.addEventListener("click", function () {
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
         draw(cars, DOM.cardsData, "cards")
+    })
+    tableViewButton.addEventListener("click", function () {
+        // draw(cars, DOM.cardsData, "cards")
+        alert("this is working")
     })
 }())
 
