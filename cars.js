@@ -7,26 +7,41 @@ const displayFunctions = {
     "cards": getCardItem,
     "list": getListItem,
     "table": getRowItem,
+    "tableHeader": getRowHeaderItem
 };
 
-const columns = [
+const headers = [[
     {
         value: "lp",
-        label: "LP"
+        label: "LP",
+        isVisible: true,
     },
     {
         value: "color",
-        label: "Color"
+        label: "Color",
+        isVisible: true,
     },
     {
         value: "type",
-        label: "Type"
+        label: "Type",
+        isVisible: true
     },
     {
         value: "doors",
-        label: "Doors"
+        label: "Doors",
+        isVisible: true
+    },
+    {
+        value: "isSunRoof",
+        label: "Sun Roof",
+        isVisible: true
+    },
+    {
+        value: "isAWD",
+        label: "4 X 4",
+        isVisible: false
     }
-]
+]]
 
 
 function generateCars(numberOfCars, isArray) { //return array with Cars ( each car is an object in JS)
@@ -48,7 +63,8 @@ function generateSingleCar(index) {
         color: _generateColor(),
         type: _generateType(),
         doors: _generateDoors(),
-        isSunRoof: _isSunRoof(index)
+        isSunRoof: _isSunRoof(index),
+        isAWD: _isAWD(index)
     };
 
 
@@ -67,6 +83,9 @@ function generateSingleCar(index) {
     function _generateType() {
         return types[Math.floor(Math.random() * types.length)];
     }
+    function _isAWD(index) {
+        return index % 2 === 0 ? true : false
+    }
 
 }
 
@@ -84,40 +103,57 @@ function generateSingleCar(index) {
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
+    DOM.whatToDraw = "list"
 
-    draw(cars, DOM.listData, "list");
+    draw(cars, DOM.listData, DOM.whatToDraw);
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
-    //     <tr>
-    //     <th scope="col">LP</th>
-    //     <th scope="col">Color</th>
-    //     <th scope="col">Type</th>
-    //     <th scope="col">Doors</th>
-    // </tr>
+    const searchOperation = document.getElementById("searchOperation");
 
     listViewButton.addEventListener("click", function () {
+        DOM.whatToDraw = "list";
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
+        DOM.whatToDraw = "cards"
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
-        
+        DOM.whatToDraw = "table"
         draw(cars, DOM.tableData, "table")
+        draw(headers, DOM.tableHead, "tableHeader", false)
+    })
+
+    searchOperation.addEventListener("click", function () {
+        const value = document.getElementById("searchValue").value;
+        if (!value) return;
+        const result = cars.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
+        if (DOM.whatToDraw === "table") {
+            draw(result, DOM.tableData, "table")
+            draw(headers, DOM.tableHead, "tableHeader", false)
+        }
+        if (DOM.whatToDraw === "cards") {
+            draw(result, DOM.cardsData, "cards")
+        }
+        if (DOM.whatToDraw === "list") {
+            draw(result, DOM.listData, "list")
+        }
+
     })
 }())
 
 
-function draw(data, domContainer, displayType) {
-    clearDOM()
+function draw(data, domContainer, displayType, clear = true) {
+    if (clear) clearDOM()
     if (!Array.isArray(data)) return;
     if (typeof domContainer !== 'object') return;
     const displayFunction = displayFunctions[displayType]
     if (typeof displayFunction !== 'function') return;
-    data.forEach(car => {
-        domContainer.append(displayFunction(car))
+    data.forEach(item => {
+        const result = displayFunction(item)
+        domContainer.append(result)
     });
 }
 
@@ -147,10 +183,29 @@ function getCardItem(carData) {
     card.style.height = "50px";
     card.style.width = "300px";
     card.style.display = "inline-block";
-    card.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
+    card.innerText = `car lp: ${carData.lp}, car color: ${carData.color} , car type: ${carData.type}`;
     return card;
 }
 
+function getRowHeaderItem(headers) {
+    const ths = headers.filter((header) => { return header.isVisible }).map(header => {
+        const { label, isVisible } = header;
+        if (isVisible) return _getTH(label)
+    })
+    const tr = _getTR();
+    tr.append(...ths);
+    return tr;
+    function _getTR() {
+        return document.createElement("TR");
+    }
+
+    function _getTH(value) {
+        const th = document.createElement("TH");
+        th.style.color = "red";
+        th.innerText = value;
+        return th;
+    }
+}
 function getRowItem(carData) {
     // const lp = carData.lp;
     // const color = carData.color;
@@ -158,19 +213,28 @@ function getRowItem(carData) {
     // const doors = carData.doors;
     const { lp, type, doors, color } = carData; // destructuring es6 
     // return getRowItem;
+
     const tr = _getTR();
-    const tdLP = _getTD(lp);
-    const tdColor = _getTD(color);
-    const tdType = _getTD(type);
-    const tdDoors = _getTD(doors);
-    tr.append(tdLP, tdColor, tdType, tdDoors)
+    const firstRowFromHeaders = headers[0];
+    const visibleHeaders = firstRowFromHeaders.filter((header) => { return header.isVisible });
+    const tds = visibleHeaders.map((header) => {
+        const { value } = header;
+        const currentValue = carData[value];
+        return _getTD(currentValue)
+    })
+
+    // const tdLP = _getTD(lp);
+    // const tdColor = _getTD(color);
+    // const tdType = _getTD(type);
+    // const tdDoors = _getTD(doors);
+    tr.append(...tds)
     return tr;
     function _getTR() {
         return document.createElement("TR");
     }
 
     function _getTD(value) {
-        const allowedTypes = ["string", "number"];
+        const allowedTypes = ["string", "number", "boolean"];
         const theType = typeof value;
         // if (!allowedTypes.includes(theType)) return;
         let currentValue = !allowedTypes.includes(theType) ? "-" : value
