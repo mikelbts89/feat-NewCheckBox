@@ -9,6 +9,25 @@ const displayFunctions = {
     "table": getRowItem,
 };
 
+const columns = [
+    {
+        value: "lp",
+        label: "LP"
+    },
+    {
+        value: "color",
+        label: "Color"
+    },
+    {
+        value: "type",
+        label: "Type"
+    },
+    {
+        value: "doors",
+        label: "Doors"
+    }
+]
+
 
 function generateCars(numberOfCars, isArray) { //return array with Cars ( each car is an object in JS)
     if (typeof numberOfCars !== 'number') return;
@@ -63,11 +82,20 @@ function generateSingleCar(index) {
     const cars = generateCars(100, true)
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
+    DOM.tableData = document.getElementById("table-data");
+    DOM.tableHead = document.getElementById("table-head");
+
     draw(cars, DOM.listData, "list");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
+    //     <tr>
+    //     <th scope="col">LP</th>
+    //     <th scope="col">Color</th>
+    //     <th scope="col">Type</th>
+    //     <th scope="col">Doors</th>
+    // </tr>
 
     listViewButton.addEventListener("click", function () {
         draw(cars, DOM.listData, "list")
@@ -76,8 +104,8 @@ function generateSingleCar(index) {
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
-        // draw(cars, DOM.cardsData, "cards")
-        alert("this is working")
+        
+        draw(cars, DOM.tableData, "table")
     })
 }())
 
@@ -94,8 +122,17 @@ function draw(data, domContainer, displayType) {
 }
 
 function clearDOM() {
-    DOM.listData.innerHTML = "";
-    DOM.cardsData.innerHTML = "";
+    // DOM.listData.innerHTML = "";
+    // DOM.cardsData.innerHTML = "";
+    // DOM.tableData.innerHTML = "";
+
+    // this is more dynamic
+
+    Object.keys(DOM).forEach((keyInDom) => {
+        if (typeof DOM[keyInDom] !== "object") return;
+        DOM[keyInDom].innerHTML = "";
+    })
+
 }
 function getListItem(carData) {
     const listItem = document.createElement("li");
@@ -113,4 +150,34 @@ function getCardItem(carData) {
     card.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
     return card;
 }
-function getRowItem() { }
+
+function getRowItem(carData) {
+    // const lp = carData.lp;
+    // const color = carData.color;
+    // const type = carData.type;
+    // const doors = carData.doors;
+    const { lp, type, doors, color } = carData; // destructuring es6 
+    // return getRowItem;
+    const tr = _getTR();
+    const tdLP = _getTD(lp);
+    const tdColor = _getTD(color);
+    const tdType = _getTD(type);
+    const tdDoors = _getTD(doors);
+    tr.append(tdLP, tdColor, tdType, tdDoors)
+    return tr;
+    function _getTR() {
+        return document.createElement("TR");
+    }
+
+    function _getTD(value) {
+        const allowedTypes = ["string", "number"];
+        const theType = typeof value;
+        // if (!allowedTypes.includes(theType)) return;
+        let currentValue = !allowedTypes.includes(theType) ? "-" : value
+        // if (theType !== "string" && theType !== "number") return;
+        const td = document.createElement("TD");
+        td.innerText = currentValue;
+        return td;
+    }
+}
+
