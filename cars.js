@@ -132,7 +132,7 @@ function generateSingleCar(index) {
         const result = cars.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
         if (DOM.whatToDraw === "table") {
             draw(result, DOM.tableData, "table")
-            draw(headers, DOM.tableHead, "tableHeader", false)
+            draw(headers, DOM.tableHead, "tableHeader")
         }
         if (DOM.whatToDraw === "cards") {
             draw(result, DOM.cardsData, "cards")
