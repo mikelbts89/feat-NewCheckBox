@@ -10,6 +10,7 @@ const displayFunctions = {
     "tableHeader": getRowHeaderItem
 };
 
+
 const headers = [[
     {
         value: "lp",
@@ -39,7 +40,7 @@ const headers = [[
     {
         value: "isAWD",
         label: "4 X 4",
-        isVisible: false
+        isVisible: true
     }
 ]]
 
@@ -96,14 +97,13 @@ function generateSingleCar(index) {
 // map - return partial result
 // reduce - next time..
 
-
 (function () {
-    const cars = generateCars(100, true)
+    const cars = generateCars(20, true)
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
-    DOM.whatToDraw = "list"
+    DOM.whatToDraw = "list";
 
     draw(cars, DOM.listData, DOM.whatToDraw);
 
@@ -121,6 +121,9 @@ function generateSingleCar(index) {
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
+        const sunRoofOnHeader = headers[0];
+        const sunRoof= sunRoofOnHeader.find(item => item.value === 'isSunRoof');
+        sunRoof.isVisible = chkBox.checked;
         DOM.whatToDraw = "table"
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
