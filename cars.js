@@ -35,7 +35,7 @@ const headers = [[
     {
         value: "isSunRoof",
         label: "Sun Roof",
-        isVisible: true
+        isVisible: false
     },
     {
         value: "isAWD",
