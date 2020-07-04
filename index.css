@@ -11,8 +11,8 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  
 
-  .margin > div {
-    margin-left: 5px;
+  #checkBoxs{
+    margin-top: 20px;
+    text-align: center;
   }
